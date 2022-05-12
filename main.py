@@ -5,40 +5,32 @@ import numpy as np
 import pandas as pd
 import sklearn as sd
 
-
-model = pickle.load(open('bank_app.pkl', 'rb'))
-
-
-
+model = pickle.load(open('model.pkl', 'rb'))
 
 
 app = Flask(__name__)
-@app.route("/")
-def hello():
-    return   "Hello world"
+@app.route('/')
+def home():
+    return "Good Job ML Engineer"
 
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    CreditScore = request.form.get('Credit Score')
+    CreditScore = request.form.get('CreditScore')
     Age = request.form.get('Age')
     Tenure = request.form.get('Tenure')
     Balance = request.form.get('Balance')
-    NumberofProducts = request.form.get('Number of Products')
-    HaveCreditCard = request.form.get('Have Credit Card?')
-    ActiveMember = request.form.get('Active Member?')
-    EstimatedSalary = request.form.get('Estimated Salary')
+    NumberOfProducts = request.form.get('NumberOfProducts')
+    HasCrCard = request.form.get('HasCrCard')
+    IsActiveMember = request.form.get('IsActiveMember')
+    EstimatedSalary = request.form.get('EstimatedSalary')
 
-    input_query = np.array([[CreditScore, Age, Tenure, Balance, NumberofProducts, HaveCreditCard, ActiveMember, EstimatedSalary]])
-
+    input_query = np.array(
+        [[CreditScore, Age, Tenure, Balance, NumberOfProducts, HasCrCard, IsActiveMember, EstimatedSalary]])
     result = model.predict(input_query)[0]
 
     return jsonify({'stay': str(result)})
 
-
-
-
 if __name__ ==  "__main__":
 
     app.run()
-   
